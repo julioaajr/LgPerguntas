@@ -42,11 +42,11 @@ class AuthUser(models.Model):
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.BooleanField()
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=128)
     email = models.CharField(max_length=254)
     is_staff = models.BooleanField()
     is_active = models.BooleanField()
-    date_joined = models.DateTimeField()
+    date_joined = models.DateTimeField(auto_now=True)
     last_name = models.CharField(max_length=150)
 
     class Meta:
@@ -117,7 +117,12 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-class Amigos(models.Model):
-    myid = models.IntegerField()
-    Empregado = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    data_add = models.DateTimeField(auto_now_add=True)
+'''class Empresa(models.Model):
+   master = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
+    cnpj = models.CharField(max_length=20)
+'''    
+
+class Funcionario(models.Model):
+    usuario = models.ForeignKey(AuthUser, on_delete=models.CASCADE,related_name="empresa")
+    empresa = models.ForeignKey(AuthUser, on_delete=models.CASCADE,related_name="usuario")
+

@@ -1,0 +1,4 @@
+#folders and files to ignore
+.venv 
+*.pyc
+migrations
