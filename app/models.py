@@ -116,3 +116,8 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+class Amigos(models.Model):
+    myid = models.IntegerField()
+    Empregado = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    data_add = models.DateTimeField(auto_now_add=True)
