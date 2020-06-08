@@ -16,9 +16,13 @@ def login(request):
         else:
             return redirect('')
 
+
+
 @csrf_protect
 def registro (request):
-    if request.method =='post':
+    if request.method == 'GET' :
+       return render(request,'login/registro.html')
+    if request.method =='POST':
         username = request.POST.get('username')
         last_name = request.POST.get('last_name')
         password = request.POST.get('password')
@@ -31,4 +35,6 @@ def registro (request):
             try:
                 user = user.objects.create_user(username=username, password=password, is_superuser=False, is_staff=True, is_active=True)
                 user.save()
-                return redirect('login')
+                return redirect('/')
+            except:
+                return render(request,'login/registro.html')
