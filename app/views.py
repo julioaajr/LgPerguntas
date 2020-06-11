@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_protect
+from .models import Funcionario,PerguntaSimples,Jogo
+import random
 # Create your views here.
 
 @csrf_protect
@@ -41,3 +43,17 @@ def registro (request):
 
 def home(request):
     return redirect(request,'home')
+
+
+def jogo(request):
+    data = {}
+    try:
+        data['perguntas'] = PerguntaSimples.objects.all()
+        random.shuffle(data['perguntas'])
+        return render(request,'login/jogo.html',data)
+    except:
+        print('erro')
+        return render(request,'login/jogo.html',data)
+    return render(request,'login/jogo.html',data)
+    
+    

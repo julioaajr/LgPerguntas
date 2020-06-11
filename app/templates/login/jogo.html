@@ -1,0 +1,21 @@
+{% extends 'login/template.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 box-container">
+            <form action="">
+                <table>
+                    <tr>
+                        <td >
+                            {%for pergunta in perguntas %}
+                            <h3>{{pergunta.descricao}}</h3>
+                            <input type="checkbox" name="resposta" >
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
