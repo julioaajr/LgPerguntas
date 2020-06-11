@@ -38,3 +38,6 @@ def registro (request):
                 return redirect('/')
             except:
                 return render(request,'login/registro.html')
+
+def home(request):
+    return redirect(request,'home')
