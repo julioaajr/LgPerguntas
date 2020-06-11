@@ -126,3 +126,12 @@ class Funcionario(models.Model):
     usuario = models.ForeignKey(AuthUser, on_delete=models.CASCADE,related_name="empresa")
     empresa = models.ForeignKey(AuthUser, on_delete=models.CASCADE,related_name="usuario")
 
+class PerguntaSimples (models.Model):
+    descricao = models.CharField(max_length=254)
+    resposta =  models.BooleanField()
+
+class Jogo(models.Model):
+    jogador = models.ForeignKey(Funcionario, on_delete=models.CASCADE)
+    pontuacao = models.IntegerField()
+
+    
