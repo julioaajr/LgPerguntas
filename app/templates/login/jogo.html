@@ -4,16 +4,17 @@
     <div class="row">
         <div class="col-md-12 box-container">
             <form action="">
-                <table>
-                    <tr>
-                        <td >
-                            {%for pergunta in perguntas %}
-                            <h3>{{pergunta.descricao}}</h3>
-                            <input type="checkbox" name="resposta" >
-                            {% endfor %}
-                        </td>
-                    </tr>
-                </table>
+                {%for pergunta in perguntas %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>{{pergunta.descricao}}</h3>
+                        <div class="form-group">
+                            <input type="checkbox"name="resposta" >
+                            <label for="">Clique para sim </label>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </form>
         </div>
     </div>
