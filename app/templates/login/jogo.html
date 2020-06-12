@@ -9,13 +9,16 @@
                     <div class="col-md-12">
                         <h3>{{pergunta.descricao}}</h3>
                         <div class="form-group">
-                            <input type="checkbox"name="resposta" >
+                            <input type="hidden" name="pergunta" value="{{pergunta.id}}">
+                            <input type="checkbox"name="resposta" required>
                             <label for="">Clique para sim </label>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                <button type="submit" class="btn btn-dark">submit</button>
             </form>
+
         </div>
     </div>
 </div>
