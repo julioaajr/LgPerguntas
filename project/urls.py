@@ -22,5 +22,6 @@ urlpatterns = [
     path('',views.login),
     path('registro/',views.registro),
     path('home/',views.home),
-    path('jogo/',views.jogo)
+    path('jogo/',views.jogo),
+    path('validar_resposta/',views.valida_reposta)
 ]

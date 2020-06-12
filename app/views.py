@@ -56,4 +56,10 @@ def jogo(request):
         return render(request,'login/jogo.html',data)
     return render(request,'login/jogo.html',data)
     
+@csrf_protect
+def valida_reposta(request):
+    if request.method =='POST':
+        print(request.POST)
+        return None
+    
     
