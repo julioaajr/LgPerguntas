@@ -52,14 +52,17 @@ def jogo(request):
         random.shuffle(data['perguntas'])
         return render(request,'login/jogo.html',data)
     except:
-        print('erro')
         return render(request,'login/jogo.html',data)
     return render(request,'login/jogo.html',data)
     
 @csrf_protect
 def valida_reposta(request):
     if request.method =='POST':
-        print(request.POST)
-        return None
+        perguntas = request.POST.getlist('pergunta')
+        respostas = request.POST.getlist('resposta')
+        for i in perguntas:
+            
+            print(i)
+        return redirect('/jogo/')
     
     
