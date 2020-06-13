@@ -58,9 +58,11 @@ def home(request):
 
 def jogo(request):
     data = {}
+    #a funcao ramdom nao funcionana ele entra no try mas nao executa o random e ele passa pro except
     try:
         data['perguntas'] = PerguntaSimples.objects.all()
         random.shuffle(data['perguntas'])
+        print('ola')
         return render(request,'login/jogo.html',data)
     except:
         return render(request,'login/jogo.html',data)
@@ -101,3 +103,12 @@ def Cadastra_Pergunta(request):
 def registraComplexa(request):
     if request.method == 'GET':
         return render(request,'login/addComplexa.html')
+    if request.method == 'POST':
+        if request.POST.get('resposta') == 'on':
+            boolresposta = True
+
+        else:
+            boolresposta = False
+        alternativas = Alternativas(descricao=request.POST.get('descricao'),resposta=boolresposta)
+        alternativas.save()
+        return redirect('/jogo/')

@@ -24,5 +24,6 @@ urlpatterns = [
     path('home/',views.home),
     path('jogo/',views.jogo),
     path('validar_resposta/',views.valida_reposta),
-    path('perguntas/cadastrar', views.Cadastra_Pergunta)
+    path('perguntas/cadastrar', views.Cadastra_Pergunta),
+    path('perguntas/cadastrar_ex', views.registraComplexa)
 ]
