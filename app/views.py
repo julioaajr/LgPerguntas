@@ -60,9 +60,13 @@ def valida_reposta(request):
     if request.method =='POST':
         perguntas = request.POST.getlist('pergunta')
         respostas = request.POST.getlist('resposta')
+        data = []
         for i in perguntas:
-            
-            print(i)
+            try:
+                data.append(PerguntaSimples.objects.get(id=i,resposta=i in respostas))
+            except:
+                None
+        print(len(data))
         return redirect('/jogo/')
     
     
