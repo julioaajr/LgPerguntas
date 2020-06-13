@@ -98,3 +98,6 @@ def Cadastra_Pergunta(request):
         pergunta.save()
         return redirect('/jogo/')
 
+def registraComplexa(request):
+    if request.method == 'GET':
+        return render(request,'login/addComplexa.html')

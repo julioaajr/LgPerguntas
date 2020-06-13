@@ -135,3 +135,11 @@ class Jogo(models.Model):
     pontuacao = models.IntegerField()   
     data = models.DateTimeField(auto_now=True)
 
+class PerguntasComplexas(models.Model):
+    descricao = models.CharField(max_length=254)
+    resposta = models.CharField(max_length=254)
+
+class Alternativas(models.Model):
+    pergunta = models.ForeignKey(PerguntasComplexas, on_delete=models.CASCADE)
+    corpoAlternativa  = models.CharField(max_length=254)
+    correta = models.BooleanField(default = False)
