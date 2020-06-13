@@ -14,6 +14,7 @@ class SalvaPontuacao(ModelForm):
         fields = ['jogador','pontuacao']
 
 class PerguntaSimplesForm(ModelForm):
+
     class Meta:
         model: PerguntaSimples
         fields = ['descricao','resposta']
@@ -89,14 +90,11 @@ def Cadastra_Pergunta(request):
     if request.method == 'GET':
         return render(request,'login/addPergunta.html')
     if request.method == 'POST':
-        array = 1
-        novaPergunta = {
-            'descricao': request.POST.get('descricao'),
-            'resposta': array in request.POST.get('resposta')
-        }
-        pergunta = PerguntaSimplesForm(novaPergunta)
-        if pergunta.is_valid:
-            pergunta.save()
-            return redirect('perguntas/cadastrar')
+        if request.POST.get('resposta') == 'on':
+            boolresposta = True
         else:
-            return redirect('/jogo/')
+            boolresposta = False
+        pergunta = PerguntaSimples(descricao=request.POST.get('descricao'),resposta=boolresposta)
+        pergunta.save()
+        return redirect('/jogo/')
+
