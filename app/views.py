@@ -2,9 +2,21 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_protect
+from django.forms import ModelForm
 from .models import Funcionario,PerguntaSimples,Jogo
 import random
+
 # Create your views here.
+
+class SalvaPontuacao(ModelForm):
+    class Meta:
+        model = Jogo
+        fields = ['jogador','pontuacao']
+
+class PerguntaSimplesForm(ModelForm):
+    class Meta:
+        model: PerguntaSimples
+        fields = ['descricao','resposta']
 
 @csrf_protect
 def login(request):
@@ -17,8 +29,6 @@ def login(request):
             return redirect('/')
         else:
             return redirect('')
-
-
 
 @csrf_protect
 def registro (request):
@@ -67,6 +77,26 @@ def valida_reposta(request):
             except:
                 None
         print(len(data))
+        jogoJson = {
+            'usuario': request.user,
+            'pontuacao': (len(data))
+        }
+        jogo = SalvaPontuacao(jogoJson)
+        jogo.save()
         return redirect('/jogo/')
-    
-    
+
+def Cadastra_Pergunta(request):
+    if request.method == 'GET':
+        return render(request,'login/addPergunta.html')
+    if request.method == 'POST':
+        array = 1
+        novaPergunta = {
+            'descricao': request.POST.get('descricao'),
+            'resposta': array in request.POST.get('resposta')
+        }
+        pergunta = PerguntaSimplesForm(novaPergunta)
+        if pergunta.is_valid:
+            pergunta.save()
+            return redirect('perguntas/cadastrar')
+        else:
+            return redirect('/jogo/')

@@ -132,6 +132,6 @@ class PerguntaSimples (models.Model):
 
 class Jogo(models.Model):
     jogador = models.ForeignKey(Funcionario, on_delete=models.CASCADE)
-    pontuacao = models.IntegerField()
+    pontuacao = models.IntegerField()   
+    data = models.DateTimeField(auto_now=True)
 
-    
