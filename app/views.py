@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_protect
 from django.forms import ModelForm
 from .models import Funcionario,PerguntaSimples,Jogo
+from django.contrib import messages
 import random
 
 # Create your views here.
@@ -19,21 +21,34 @@ class PerguntaSimplesForm(ModelForm):
         model: PerguntaSimples
         fields = ['descricao','resposta']
 
+def login_user(request):
+    return render(request, 'login.html')
+
+
 @csrf_protect
-def login(request):
-    if request.method == 'GET' :
-       return render(request,'login/login.html')
-    elif request.method =="POST":
-        user = authenticate(username = request.POST.get('username'), password = request.POST.get('password') )
+def submit_login(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
         if user is not None:
-            login(request,user)
+            login(request, user)
             return redirect('/')
         else:
-            return redirect('')
+            messages.error(request, "usuário e senha invalido favor tentar novamente.")
+    return redirect('/login/')
+
+def logout_user(request):
+    logout(request)
+    return redirect('/login/')
+
+
+
+
 
 @csrf_protect
 def registro (request):
-    if request.method == 'GET' :
+    if request.method == 'GET':
        return render(request,'login/registro.html')
     if request.method =='POST':
         username = request.POST.get('username')
@@ -52,8 +67,6 @@ def registro (request):
             except:
                 return render(request,'login/registro.html')
 
-def home(request):
-    return redirect(request,'home')
 
 
 def jogo(request):
@@ -112,3 +125,8 @@ def registraComplexa(request):
         alternativas = Alternativas(descricao=request.POST.get('descricao'),resposta=boolresposta)
         alternativas.save()
         return redirect('/jogo/')
+
+
+@login_required(login_url='/login/')
+def home(request):
+    return render(request, 'home.html')

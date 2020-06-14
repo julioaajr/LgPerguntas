@@ -1,14 +1,14 @@
-{% extends 'login/template.html' %}
+{% extends 'template.html' %}
 {% block loginform %}
 <div class="container">
     <div class="row">
         <div class="col-md-12 box-container">
-            <form action="">
+            <form action="submit" method="POST"> {% csrf_token %} 
                 <div class="form-group">
                     <label>user</label>
-                    <input type="text" class="form-control" name="username">
+                    <input type="text" class="form-control" name="username" autofocus>
                     <label>password</label>
-                    <input type="text" class="form-control" name="password">
+                    <input type="password" class="form-control" name="password">
                     <button class="btn btn-dark " type="submit">login</button>
                     <a href="registro">
                         <button type ="button" class="btn btn-warning" >registrar</button>
@@ -16,6 +16,11 @@
                 </div>
                 
             </form>
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                <strong>ERROR!</strong> {{ message }}
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
