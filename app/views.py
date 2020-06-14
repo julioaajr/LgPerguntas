@@ -48,8 +48,6 @@ def logout_user(request):
 
 @csrf_protect
 def registro (request):
-    if request.method == 'GET':
-       return render(request,'login/registro.html')
     if request.method =='POST':
         username = request.POST.get('username')
         last_name = request.POST.get('last_name')
@@ -65,21 +63,27 @@ def registro (request):
                 user.save()
                 return redirect('/')
             except:
-                return render(request,'login/registro.html')
+                return render(request,'registro.html')
+    return render(request,'registro.html')
 
 
 
 def jogo(request):
     data = {}
-    #a funcao ramdom nao funcionana ele entra no try mas nao executa o random e ele passa pro except
+    #a funcao random nao funcionana ele entra no try mas nao executa o random e ele passa pro except
     try:
         data['perguntas'] = PerguntaSimples.objects.all()
-        random.shuffle(data['perguntas'])
-        print('ola')
-        return render(request,'login/jogo.html',data)
+        teste = data['perguntas']
+        print(teste)
+        random.shuffle(teste)
+        
+        data['perguntass'] = random.sample(data['perguntas'],len(data['perguntas']))
+        print('---------------------------------linha 77')
+        print(teste)
+        return render(request,'jogo.html',data)
     except:
-        return render(request,'login/jogo.html',data)
-    return render(request,'login/jogo.html',data)
+        return render(request,'jogo.html',data)
+    return render(request,'jogo.html',data)
     
 @csrf_protect
 def valida_reposta(request):
