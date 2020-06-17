@@ -1,6 +1,6 @@
 {% extends 'template.html' %}
 {% block content %}
-<div class="container">
+<div class="container my-5 p-5">
     <div class="row">
         <div class="col-md-12">
             
@@ -9,16 +9,23 @@
                 {%for pergunta in perguntas %}
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>{{pergunta.descricao}}</h3>
-                        <div class="form-group">
-                            <input type="hidden" name="pergunta"  value="{{pergunta.id}}">
-                            <input type="checkbox"name="resposta" value="{{pergunta.id}}">
-                            <label for="">Clique para sim </label>
+                        <div class="jumbotron p-2">
+                            <p class="h4">{{pergunta.descricao}}</p>
+                            <hr class="my-2">
+                            <div class="form-group">
+                                <input type="hidden" name="pergunta"  value="{{pergunta.id}}">
+                                <input type="checkbox"name="resposta" value="{{pergunta.id}}">
+                                <label for="">Clique para sim </label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-                <button type="submit" class="btn btn-dark">submit</button>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-dark">Enviar</button>
+                    </div>
+                </div>
             </form>
 
         </div>

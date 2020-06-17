@@ -107,7 +107,7 @@ def valida_reposta(request):
 
 def Cadastra_Pergunta(request):
     if request.method == 'GET':
-        return render(request,'login/addPergunta.html')
+        return render(request,'addPergunta.html')
     if request.method == 'POST':
         if request.POST.get('resposta') == 'on':
             boolresposta = True
