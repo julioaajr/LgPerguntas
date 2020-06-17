@@ -7,6 +7,7 @@ from django.forms import ModelForm
 from .models import Funcionario,PerguntaSimples,Jogo
 from django.contrib import messages
 import random
+from datetime import datetime
 
 # Create your views here.
 
@@ -42,10 +43,6 @@ def logout_user(request):
     logout(request)
     return redirect('/login/')
 
-
-
-
-
 @csrf_protect
 def registro (request):
     if request.method =='POST':
@@ -65,7 +62,6 @@ def registro (request):
             except:
                 return render(request,'registro.html')
     return render(request,'registro.html')
-
 
 
 def jogo(request):
@@ -95,7 +91,7 @@ def valida_reposta(request):
             try:
                 data.append(PerguntaSimples.objects.get(id=i,resposta=i in respostas))
             except:
-                None
+                return redirect('/jogo/')
         print(len(data))
         jogoJson = {
             'usuario': request.user,
