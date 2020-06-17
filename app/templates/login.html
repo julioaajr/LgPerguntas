@@ -1,27 +1,54 @@
 {% extends 'template.html' %}
 {% block loginform %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 box-container">
-            <form action="submit" method="POST"> {% csrf_token %} 
+<div class="container" style="
+    display:flex;
+    justify-content: center;
+    min-width: 100%;
+    margin-top: 20vh !important;
+    margin-bottom: 15% !important;
+">
+	<div class="bg-dark text-dark box-container"
+		style="min-height:60vh;display: flex;flex-direction: column;justify-content: space-around;color: whitesmoke !important;border-radius: 8px;min-width: 50%;padding: 6%;">
+		<form action="submit" method="POST"> 
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center display-4">
+                    LgPerguntas
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label>user</label>
                     <input type="text" class="form-control" name="username" autofocus>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
                     <label>password</label>
                     <input type="password" class="form-control" name="password">
-                    <button class="btn btn-dark " type="submit">login</button>
-                    <a href="registro">
-                        <button type ="button" class="btn btn-warning" >registrar</button>
-                    </a>
                 </div>
-                
-            </form>
-            {% for message in messages %}
-            <div class="alert alert-danger">
-                <strong>ERROR!</strong> {{ message }}
             </div>
-            {% endfor %}
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <button class="btn btn-outline-light" type="submit">login</button>
+                    <button type ="button" class="btn btn-outline-warning" onclick="location.href='registro'">registrar</button>
+                </div>
+            </div>
+        </div>
+		</form>
+		{% for message in messages %}
+		<div class="alert alert-danger">
+			<strong>ERROR!</strong> {{ message }}
+		</div>
+		{% endfor %}
+	</div>
+
 </div>
 {% endblock loginform %}
