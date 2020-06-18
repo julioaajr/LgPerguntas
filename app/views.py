@@ -68,14 +68,7 @@ def jogo(request):
     data = {}
     #a funcao random nao funcionana ele entra no try mas nao executa o random e ele passa pro except
     try:
-        data['perguntas'] = PerguntaSimples.objects.all()
-        teste = data['perguntas']
-        print(teste)
-        random.shuffle(teste)
-        
-        data['perguntass'] = random.sample(data['perguntas'],len(data['perguntas']))
-        print('---------------------------------linha 77')
-        print(teste)
+        data['perguntas'] = PerguntaSimples.objects.all().order_by('?')
         return render(request,'jogo.html',data)
     except:
         return render(request,'jogo.html',data)
@@ -91,14 +84,15 @@ def valida_reposta(request):
             try:
                 data.append(PerguntaSimples.objects.get(id=i,resposta=i in respostas))
             except:
-                return redirect('/jogo/')
-        print(len(data))
-        jogoJson = {
-            'usuario': request.user,
-            'pontuacao': (len(data))
-        }
-        jogo = SalvaPontuacao(jogoJson)
-        jogo.save()
+                None
+        points = len(data)
+        print(points)
+        try:
+            usuario = AuthUser.objects.get(pk=request.user.id)
+            jogo = Jogo(jogador=usuario,pontuacao=points)
+            jogo.save()
+        except:
+            None
         return redirect('/jogo/')
 
 def Cadastra_Pergunta(request):

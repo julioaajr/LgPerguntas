@@ -131,7 +131,7 @@ class PerguntaSimples (models.Model):
     resposta =  models.BooleanField()
 
 class Jogo(models.Model):
-    jogador = models.ForeignKey(Funcionario, on_delete=models.CASCADE)
+    jogador = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
     pontuacao = models.IntegerField()   
     data_jogo = models.DateTimeField(auto_now=True)
 
