@@ -5,7 +5,6 @@
         <div class="col-md-12 box-container">
             <form action="">
                 <div class="form-group">
-                    <h1>entrou</h1>
                         <table>
                             <thead>
                                 <tr>
@@ -15,7 +14,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <p>SCORE</p>
+                                <p> SEU SCORE</p>
                                 {% for item in score %}
                                 <tr>
                                     <td>
@@ -28,7 +27,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
-
+                        {% if user.is_superuser or is_staff%}
                         <table>
                             <thead>
                                 <tr>
@@ -39,13 +38,13 @@
                             </thead>
                             <tbody>
                                 <br><br><p>TOP FUNCIONARIOS</p>
-                                {% for item in acertos %}
+                                {% for item in melhores %}
                                 <tr>
                                     <td>
-                                        Acertos: {{item.}} //
+                                        CPF: {{item.nome_jogador}} //
                                     </td>
                                     <td>
-                                        {{item.descricao}}
+                                        {{item.pontuacao}}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -89,7 +88,7 @@
                                 {% for item in erros %}
                                 <tr>
                                     <td>
-                                        Acertos: {{item.erros}} //
+                                        Erros: {{item.erros}} //
                                     </td>
                                     <td>
                                         {{item.descricao}}
@@ -99,7 +98,7 @@
                             </tbody>
 
                         </table>
-                    
+                    {%endif%}
                 </div>
                 
             </form>

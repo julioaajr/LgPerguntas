@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_protect
 from django.forms import ModelForm
-from django.contrib.auth.models import User
 from .models import Funcionario,PerguntaSimples,Jogo
 from django.contrib import messages
 import random
@@ -40,35 +39,28 @@ def submit_login(request):
             messages.error(request, "usuário e senha invalido favor tentar novamente.")
     return redirect('/login/')
 
-
 def logout_user(request):
     logout(request)
     return redirect('/login/')
 
-
 @csrf_protect
 def registro (request):
     if request.method =='POST':
-        is_staff = request.POST.get("is_staff")
         username = request.POST.get('username')
-        first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        if is_staff == None:
-            is_staff= bool(False)
-        else:
-            is_staff= bool(True)
-        print('-username-'+username+'--nome-'+first_name+'--setor-'+last_name+'--pass--')
-        print(is_staff)
-        
-        try:
-            print("linha61")
-            user = User.objects.create_user(username=username, last_name=last_name, password='123456789', is_superuser=0, is_staff=is_staff)
-            print("linha61")
-            user.save()
-            print("linha61")
-            return redirect('/')
-        except:
-            return render(request,'registro.html')
+        password = request.POST.get('password')
+        rpassword = request.POST.get('rpassword')
+        is_superuser = False
+        is_staff = True
+        is_active = True
+        date_joined = datetime.now()
+        if (password == rpassword):
+            try:
+                user = user.objects.create_user(username=username, password=password, is_superuser=False, is_staff=True, is_active=True)
+                user.save()
+                return redirect('/')
+            except:
+                return render(request,'registro.html')
     return render(request,'registro.html')
 
 
@@ -85,13 +77,13 @@ def jogo(request):
     except:
         return render(request,'jogo.html',data)
     return render(request,'jogo.html',data)
-
-
+    
 @csrf_protect
 def valida_reposta(request):
     if request.method =='POST':
         perguntas = request.POST.getlist('pergunta')
         respostas = request.POST.getlist('resposta')
+
         data = []
         pontuacao=0
         for i in perguntas:
@@ -111,13 +103,12 @@ def valida_reposta(request):
         print(pontuacao)
         try:
             usuario = request.user
-            jogo = Jogo(jogador=usuario.id, pontuacao = pontuacao, nome_jogador = usuario.first_name)
+            jogo = Jogo(jogador=usuario.id, pontuacao = pontuacao, nome_jogador = usuario.username)
             jogo.save()
             print (jogo.data_jogo)
         except:
             None
         return redirect('/jogo/')
-
 
 def Cadastra_Pergunta(request):
     if request.method == 'GET':
@@ -131,6 +122,18 @@ def Cadastra_Pergunta(request):
         pergunta.save()
         return redirect('/jogo/')
 
+def registraComplexa(request):
+    if request.method == 'GET':
+        return render(request,'login/addComplexa.html')
+    if request.method == 'POST':
+        if request.POST.get('resposta') == 'on':
+            boolresposta = True
+
+        else:
+            boolresposta = False
+        alternativas = Alternativas(descricao=request.POST.get('descricao'),resposta=boolresposta)
+        alternativas.save()
+        return redirect('/jogo/')
 
 
 @login_required(login_url='/login/')

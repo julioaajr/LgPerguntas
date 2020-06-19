@@ -1,20 +1,33 @@
-{% extends 'login/template.html' %}
+{% extends 'template.html' %}
 {% block loginform %}
-<div class="container">
+<div class="container" style="margin-top: 10vh;">
     <div class="row">
         <div class="col-md-12 box-container">
-            <form action="">
+            <form action="" method="POST">{% csrf_token %}
+                <h2>CADASTRO DE USUARIO</h2>
                 <div class="form-group">
-                    <label>username</label>
+                    {% if user.is_superuser %}
+                    <label>Administrador</label>
+                    <input type="checkbox" name="is_staff" value="True">
+                    <br><br>
+                    {% endif%}
+                    <label>CPF</label>
                     <input type="text" class="form-control" name="username">
+                    
+                    <label>Nome</label>
+                    <input type="text" class="form-control" name="first_name">
+
                     <label>password</label>
-                    <input type="text" class="form-control" name="password">
-                    <label>cpf</label>
-                    <input type="text" class="form-control" name="nome">
+                    <input type="text" class="form-control" name="password" value ="123456789"placeholder="1234" readonly>
+
                     <label>setor</label>
-                    <input type="text" class="form-control" name="last_nome">
-                    <a href="/">
-                    <button type ="button" class="btn btn-warning" >confirmar </button>
+                    <select class="form-control" name="last_name">
+                        <option value="Operacional">Operacional</option>
+                        <option value="Financeiro">Financeiro</option>
+                        <option value="Juridico">Juridico</option>
+                    </select>
+                    <br>
+                    <button type ="submit" class="btn btn-warning" >confirmar </button>
                     </a> 
                 </div>
             </form>
