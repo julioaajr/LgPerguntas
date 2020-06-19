@@ -66,8 +66,13 @@ def registro (request):
 
 def jogo(request):
     data = {}
+    data['perguntas']=[]
     try:
-        data['perguntas'] = PerguntaSimples.objects.all().order_by('?')
+        data['pergunta'] = PerguntaSimples.objects.all().order_by('?')
+        x=0
+        while x < 5:
+            data['perguntas'].append(data['pergunta'][x])
+            x+=1
         return render(request,'jogo.html',data)
     except:
         return render(request,'jogo.html',data)
@@ -77,28 +82,30 @@ def jogo(request):
 def valida_reposta(request):
     if request.method =='POST':
         perguntas = request.POST.getlist('pergunta')
-        #respostas = request.POST.getlist('resposta')
-        data = []
-        point = 0
-        print(request.POST)
+        respostas = request.POST.getlist('resposta')
 
-        print(perguntas)
+        data = []
+        pontuacao=0
         for i in perguntas:
             try:
-                # data.append(PerguntaSimples.objects.get(id=i,resposta=i in respostas))
-                print(respostas[i])
-                vp = PerguntaSimples.objects.get(id= int(i))
-                print(vp.resposta)
-                if (vp.resposta == respostas[i]):
-                   point = point + 1
-                   print (point) 
-            except:   
-                None
-                
+                y = i in respostas
+                vp = PerguntaSimples.objects.get(id=i,resposta=y)
+                vp.acertos+=1
+                vp.save()
+                pontuacao+=1
+            except:
+                try:
+                    pe = PerguntaSimples.objects.get(id=i)
+                    pe.erros +=1
+                    pe.save()
+                except:
+                    None
+        print(pontuacao)
         try:
-            usuario = AuthUser.objects.get(pk=request.user.id)
-            jogo = Jogo(jogador=usuario,pontuacao=points)
+            usuario = request.user
+            jogo = Jogo(jogador=usuario.id, pontuacao = pontuacao, nome_jogador = usuario.username)
             jogo.save()
+            print (jogo.data_jogo)
         except:
             None
         return redirect('/jogo/')
@@ -131,4 +138,22 @@ def registraComplexa(request):
 
 @login_required(login_url='/login/')
 def home(request):
-    return render(request, 'home.html')
+    data = {}
+
+    if request.user.is_superuser or request.user.is_staff:
+        try:
+            data['acertos']= PerguntaSimples.objects.all().order_by('-acertos')
+            print(data['acertos'])
+            data['erros']=PerguntaSimples.objects.all().order_by('-erros')
+            data['melhores']=Jogo.objects.all().order_by('-pontuacao')[:5]
+
+            if request.user.is_staff:
+                data['score']=Jogo.objects.filter(jogador=request.user.id).order_by('-pontuacao')
+        except:
+            None
+    else:
+        try:
+            data['score']=Jogo.objects.filter(jogador=request.user.id).order_by('-pontuacao')
+        except:
+            None
+    return render(request, 'home.html',data)

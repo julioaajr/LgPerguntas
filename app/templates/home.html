@@ -1,15 +1,109 @@
 {% extends 'template.html' %}
-{% block loginform %}
-<div class="container">
+{% block content %}
+<div class="container" style="margin-top: 10vh;">
     <div class="row">
         <div class="col-md-12 box-container">
             <form action="">
                 <div class="form-group">
                     <h1>entrou</h1>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <p>SCORE</p>
+                                {% for item in score %}
+                                <tr>
+                                    <td>
+                                        Pontuação = {{item.pontuacao}} //
+                                    </td>
+                                    <td>
+                                        {{item.data_jogo}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <br><br><p>TOP FUNCIONARIOS</p>
+                                {% for item in acertos %}
+                                <tr>
+                                    <td>
+                                        Acertos: {{item.}} //
+                                    </td>
+                                    <td>
+                                        {{item.descricao}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <br><br><p>ACERTOS</p>
+                                {% for item in acertos %}
+                                <tr>
+                                    <td>
+                                        Acertos: {{item.acertos}} //
+                                    </td>
+                                    <td>
+                                        {{item.descricao}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <br><br><p>ERROS</p>
+                                {% for item in erros %}
+                                <tr>
+                                    <td>
+                                        Acertos: {{item.erros}} //
+                                    </td>
+                                    <td>
+                                        {{item.descricao}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    
                 </div>
                 
             </form>
         </div>
     </div>
 </div>
-{% endblock loginform %}
+{% endblock %}

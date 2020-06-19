@@ -3,22 +3,19 @@
 <div class="container my-5 p-5">
     <div class="row">
         <div class="col-md-12">
-            {% csrf_token %}
+            
             <form action="../validar_resposta/" method="POST">
+                {% csrf_token %}
                 {%for pergunta in perguntas %}
                 <div class="row">
                     <div class="col-md-12">
                         <div class="jumbotron p-2">
-                            <p class="h4">{{pergunta.descricao}}</p>
+                            <p class="h4"> {{pergunta.descricao}}</p>
                             <hr class="my-2">
                             <div class="form-group">
                                 <input type="hidden" name="pergunta"  value="{{pergunta.id}}">
-                                <fieldset id="{{pergunta.id}}">
-                                <input type="radio"name='resposta'value="True">
-                                <label for="">Clique para sim </label>
-                                <input type="radio"name='resposta' value="False">
-                                <label for="">Clique para nao </label>
-                            </fieldset>
+                                <input type="checkbox"name="resposta" value="{{pergunta.id}}">
+                                <label for="">Clique para sim</label>
                             </div>
                         </div>
                     </div>

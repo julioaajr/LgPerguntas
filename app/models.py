@@ -129,12 +129,13 @@ class Funcionario(models.Model):
 class PerguntaSimples (models.Model):
     descricao = models.CharField(max_length=254)
     resposta =  models.BooleanField()
-    acertos = models.IntegerField(blank=True, null=True)
-    erros = models.IntegerField(blank=True, null=True)
+    acertos = models.IntegerField(default = 0)
+    erros = models.IntegerField(default = 0)
 
 class Jogo(models.Model):
-    jogador = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
-    pontuacao = models.IntegerField()   
+    jogador = models.IntegerField()
+    nome_jogador = models.CharField(max_length=254, default="test")
+    pontuacao = models.IntegerField()
     data_jogo = models.DateTimeField(auto_now=True)
 
 class PerguntasComplexas(models.Model):
