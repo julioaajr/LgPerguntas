@@ -5,7 +5,14 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_protect
 from django.forms import ModelForm
 from django.contrib.auth.models import User
-from .models import Funcionario,PerguntaSimples,Jogo
+from .models import Funcionario,PerguntaSimples,Jogo, AuthUser
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf  import csrf_protect, csrf_exempt
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from datetime import date
 from django.contrib import messages
 import random
 from datetime import datetime
@@ -58,14 +65,21 @@ def registro (request):
         else:
             is_staff= bool(True)
         print('-username-'+username+'--nome-'+first_name+'--setor-'+last_name+'--pass--')
-        print(is_staff)
         
         try:
-            print("linha61")
             user = User.objects.create_user(username=username, last_name=last_name, password='123456789', is_superuser=0, is_staff=is_staff)
-            print("linha61")
             user.save()
-            print("linha61")
+            y = AuthUser.objects.get(id=user.id)
+            if(request.user.is_superuser and request.user.is_staff):
+                x = AuthUser.objects.get(id=request.user.id)
+            elif(request.user.is_staff):
+                print('linha76')
+                a = AuthUser.objects.get(id=request.user.id)
+                xy = Funcionario.objects.get(usuario = a)
+                print('linha78')
+                x = xy.empresa
+            f = Funcionario(empresa=x,usuario=y)
+            f.save()
             return redirect('/')
         except:
             return render(request,'registro.html')

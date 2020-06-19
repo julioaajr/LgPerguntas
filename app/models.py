@@ -123,8 +123,8 @@ class DjangoSession(models.Model):
 '''    
 
 class Funcionario(models.Model):
-    usuario = models.ForeignKey(AuthUser, on_delete=models.CASCADE,related_name="empresa")
-    empresa = models.ForeignKey(AuthUser, on_delete=models.CASCADE,related_name="usuario")
+    usuario = models.ForeignKey(AuthUser, models.DO_NOTHING,related_name="ex1")
+    empresa = models.ForeignKey(AuthUser, models.DO_NOTHING,related_name="ex2")
 
 class PerguntaSimples (models.Model):
     descricao = models.CharField(max_length=254)
