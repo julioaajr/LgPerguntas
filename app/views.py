@@ -66,7 +66,6 @@ def registro (request):
 
 def jogo(request):
     data = {}
-    #a funcao random nao funcionana ele entra no try mas nao executa o random e ele passa pro except
     try:
         data['perguntas'] = PerguntaSimples.objects.all().order_by('?')
         return render(request,'jogo.html',data)
@@ -78,15 +77,24 @@ def jogo(request):
 def valida_reposta(request):
     if request.method =='POST':
         perguntas = request.POST.getlist('pergunta')
-        respostas = request.POST.getlist('resposta')
+        #respostas = request.POST.getlist('resposta')
         data = []
+        point = 0
+        print(request.POST)
+
+        print(perguntas)
         for i in perguntas:
             try:
-                data.append(PerguntaSimples.objects.get(id=i,resposta=i in respostas))
-            except:
+                # data.append(PerguntaSimples.objects.get(id=i,resposta=i in respostas))
+                print(respostas[i])
+                vp = PerguntaSimples.objects.get(id= int(i))
+                print(vp.resposta)
+                if (vp.resposta == respostas[i]):
+                   point = point + 1
+                   print (point) 
+            except:   
                 None
-        points = len(data)
-        print(points)
+                
         try:
             usuario = AuthUser.objects.get(pk=request.user.id)
             jogo = Jogo(jogador=usuario,pontuacao=points)

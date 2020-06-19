@@ -129,6 +129,8 @@ class Funcionario(models.Model):
 class PerguntaSimples (models.Model):
     descricao = models.CharField(max_length=254)
     resposta =  models.BooleanField()
+    acertos = models.IntegerField(blank=True, null=True)
+    erros = models.IntegerField(blank=True, null=True)
 
 class Jogo(models.Model):
     jogador = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
