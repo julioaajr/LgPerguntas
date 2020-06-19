@@ -1,108 +1,135 @@
 {% extends 'template.html' %}
 {% block content %}
 <div class="container" style="margin-top: 10vh;">
-    <div class="row">
-        <div class="col-md-12 box-container">
-            <form action="">
-                <div class="form-group">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
+	<div class="row">
+		<div class="col-md-12 box-container">
+			<form action="">
+				<div class="form-group">
 
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <p> SEU SCORE</p>
-                                {% for item in score %}
-                                <tr>
-                                    <td>
-                                        Pontuação = {{item.pontuacao}} //
-                                    </td>
-                                    <td>
-                                        {{item.data_jogo}}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        {% if user.is_superuser or is_staff%}
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									Score
+								</div>
+								<div class="card-body">
+									<table data-toggle="table" class="table table-bordered">
+										<thead>
+											<tr>
+												<th>Pontuação</th>
+												<th>Data Da Tentativa</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in score %}
+											<tr>
+												<td>
+													Pontuação = {{item.pontuacao}} //
+												</td>
+												<td>
+													{{item.data_jogo}}
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{% if user.is_superuser or is_staff%}
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									TOP FUNCIONARIOS
+								</div>
+								<div class="card-body">
+									<table data-toggle="table" class="table table-bordered">
+										<thead>
+											<tr>
+												<th>Nome Usuario</th>
+                                                <th>Pontuação</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in melhores %}
+											<tr>
+												<td>
+													CPF: {{item.nome_jogador}} //
+												</td>
+												<td>
+													{{item.pontuacao}}
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{%endif%}
+					</div>
+					{% if user.is_superuser or is_staff%}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									ACERTOS
+								</div>
+								<div class="card-body">
+									<table data-toggle="table" class="table table-bordered">
+										<thead>
+											<tr>
+												<th></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in acertos %}
+											<tr>
+												<td>Acertos: {{item.acertos}}</td>
+												<td>{{item.descricao}}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+                                    ERROS
+                                </div>
+								<div class="card-body">
+									<table data-toggle="table" class="table table-bordered">
+										<thead>
+											<tr>
+												<th>QTD Erros</th>
+												<th>Descrição</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in erros %}
+											<tr>
+												<td>Erros: {{item.erros}} </td>
+												<td>{{item.descricao}}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
 
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <br><br><p>TOP FUNCIONARIOS</p>
-                                {% for item in melhores %}
-                                <tr>
-                                    <td>
-                                        CPF: {{item.nome_jogador}} //
-                                    </td>
-                                    <td>
-                                        {{item.pontuacao}}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-
-                        </table>
-                    
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
-
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <br><br><p>ACERTOS</p>
-                                {% for item in acertos %}
-                                <tr>
-                                    <td>
-                                        Acertos: {{item.acertos}} //
-                                    </td>
-                                    <td>
-                                        {{item.descricao}}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-
-                        </table>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
-
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <br><br><p>ERROS</p>
-                                {% for item in erros %}
-                                <tr>
-                                    <td>
-                                        Erros: {{item.erros}} //
-                                    </td>
-                                    <td>
-                                        {{item.descricao}}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-
-                        </table>
-                    {%endif%}
-                </div>
-                
-            </form>
-        </div>
-    </div>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					{%endif%}
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 {% endblock %}
+{%block js%}
+<script>
+	window.onload = ()=>{$(".table").bootstrapTable()}
+</script>{%endblock js%}
