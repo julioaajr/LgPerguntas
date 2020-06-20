@@ -54,6 +54,12 @@ def logout_user(request):
 
 
 def altsenha(request):
+    data={}
+    try:
+        data['usuarios']= AuthUser.objects.filter(id=request.user.id)
+        usuario = AuthUser.objects.get(id=request.user.id)
+    except:
+        None
     if request.method == 'POST':
         passw = request.POST.get("password")
         rpassw = request.POST.get("rpassword")
@@ -65,7 +71,7 @@ def altsenha(request):
                 return redirect("/")
             except:
                 None
-    return render(request, 'altsenha.html' )
+    return render(request, 'altsenha.html',data )
 
 
 
@@ -74,6 +80,12 @@ def altsenha(request):
 @login_required(login_url='/login/')
 @csrf_protect
 def registro (request):
+    data={}
+    try:
+        data['usuarios']= AuthUser.objects.filter(id=request.user.id)
+        usuario = AuthUser.objects.get(id=request.user.id)
+    except:
+        None
     if request.method =='POST':
         is_staff = request.POST.get("is_staff")
         username = request.POST.get('username')
@@ -102,14 +114,15 @@ def registro (request):
             return redirect('/')
         except:
             return render(request,'registro.html')
-    return render(request,'registro.html')
+    return render(request,'registro.html',data)
 
 @login_required(login_url='/login/')
 def jogo(request):
     data = {}
     data['perguntas']=[]
-    try:
 
+    try:
+        data['usuarios']= AuthUser.objects.filter(id = request.user.id)
         usuario = AuthUser.objects.get(id = request.user.id)
         f = Funcionario.objects.get(usuario = usuario)
         empresa = f.empresa
@@ -159,8 +172,14 @@ def valida_reposta(request):
 
 
 def Cadastra_Pergunta(request):
+    data={}
+    try:
+        data['usuarios']= AuthUser.objects.filter(id=request.user.id)
+        usuario = AuthUser.objects.get(id=request.user.id)
+    except:
+        None
     if request.method == 'GET':
-        return render(request,'addPergunta.html')
+        return render(request,'addPergunta.html',data)
     if request.method == 'POST':
         if request.POST.get('resposta') == 'on':
             boolresposta = True
@@ -169,12 +188,36 @@ def Cadastra_Pergunta(request):
         user = AuthUser.objects.get(id = request.user.id)
         pergunta = PerguntaSimples(descricao=request.POST.get('descricao'),resposta=boolresposta, empresa = user)
         pergunta.save()
-        return redirect('/jogo/')
+        return redirect('/jogo/',data)
+
+@login_required(login_url='/login/')
+def perguntas(request):
+    data={}
+    try:
+        data['usuarios']= AuthUser.objects.filter(id=request.user.id)
+        usuario = AuthUser.objects.get(id=request.user.id)
+    except:
+        None
+    if request.user.is_superuser and request.user.is_staff:
+        try:
+            data['perguntas'] = PerguntaSimples.objects.filter(empresa=usuario)
+        except:
+            None    
+    elif(request.user.is_staff):
+        try:
+            f = Funcionario.objects.get(usuario = usuario)
+            empresa = f.empresa
+            data['perguntas'] = PerguntaSimples.objects.filter(empresa=empresa)
+        except:
+            None
+    return render(request, 'perguntas.html',data)
+
 
 @login_required(login_url='/login/')
 def funcionarios(request):
-    data = {}
+    data={}
     try:
+        data['usuarios']= AuthUser.objects.filter(id=request.user.id)
         usuario = AuthUser.objects.get(id=request.user.id)
     except:
         None
@@ -196,6 +239,7 @@ def funcionarios(request):
 def home(request):
     data = {}
     try:
+        data['usuarios']= AuthUser.objects.filter(id=request.user.id)
         usuario = AuthUser.objects.get(id=request.user.id)
     except:
         None

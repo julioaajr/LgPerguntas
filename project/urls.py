@@ -29,4 +29,5 @@ urlpatterns = [
     path('login/submit', views.submit_login),
     path('logout/', views.logout_user),
     path('altsenha/',views.altsenha),
+    path('perguntas/',views.perguntas),
 ]

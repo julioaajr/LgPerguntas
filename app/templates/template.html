@@ -30,6 +30,9 @@
         <a class="nav-link" href="/funcionarios/">Funcionarios</a>
       </li>
       <li>
+        <a class="nav-link" href="/perguntas/">Perguntas</a>
+      </li>
+      <li>
         <a class="nav-link" href="/registro/">Cadastro de usuário</a>
       </li>
       {%endif%}
@@ -39,8 +42,13 @@
       {% endif %}
     </ul>
     {% if user.is_authenticated %}
+    {% for item in usuarios%}
+      <h4 style="color: blanchedalmond;">{{item.username}} - {{item.firstname}}</h3>
+    {%endfor%}
+
       <div class="ml-auto">
-        <a class="btn btn-outline-light" href="/logout">Logout</a>
+        <a class="btn btn-outline-light" href="/altsenha/">Alterar Senha</a>
+        <a class="btn btn-outline-light" href="/logout/">Logout</a>
       </div>
     {% endif %}
   </div>
