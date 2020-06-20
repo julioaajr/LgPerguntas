@@ -126,7 +126,7 @@ def jogo(request):
         empresa = f.empresa
         data['pergunta'] = PerguntaSimples.objects.filter(empresa = empresa).order_by('?')
         x=0
-        while x < 5:
+        while x < 8:
             data['perguntas'].append(data['pergunta'][x])
             x+=1
         return render(request,'jogo.html',data)

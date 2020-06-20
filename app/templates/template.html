@@ -41,12 +41,11 @@
       </li>
       {% endif %}
     </ul>
-    {% if user.is_authenticated %}
-    {% for item in usuarios%}
-      <h4 style="color: blanchedalmond;">{{item.username}} - {{item.firstname}}</h3>
-    {%endfor%}
-
       <div class="ml-auto">
+        {% if user.is_authenticated %}
+        {% for item in usuarios%}
+          <h7 style="color: blanchedalmond;">U: {{item.username}} | N: {{item.first_name}}</h7>
+        {%endfor%}
         <a class="btn btn-outline-light" href="/altsenha/">Alterar Senha</a>
         <a class="btn btn-outline-light" href="/logout/">Logout</a>
       </div>
