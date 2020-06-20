@@ -61,19 +61,17 @@ def altsenha(request):
     except:
         None
     if request.method == 'POST':
-        passw = request.POST.get("password")
-        rpassw = request.POST.get("rpassword")
+        passw = request.POST.get("passw")
+        rpassw = request.POST.get("rpassw")
         if passw == rpassw:
             try:
-                usuario = AuthUser.objects.get(id = request.user.id)
+                usuario = User.objects.get(id = request.user.id)
                 usuario.set_password(passw)
                 usuario.save()
                 return redirect("/")
             except:
                 None
     return render(request, 'altsenha.html',data )
-
-
 
 
 
