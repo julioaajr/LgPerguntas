@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+{% block loginform %}
+<div class="container" style="margin-top: 10vh;">
+    <div class="row">
+        <div class="col-md-12 box-container">
+            <form action="" method="POST">{% csrf_token %}
+                <h2>Alterar Senha</h2>
+                <div class="form-group">
+                    <label>SENHA</label>
+                    <input type="text" class="form-control" name="password">
+                    <label>REPETIR SENHA</label>
+                    <input type="text" class="form-control" name="rpassword">
+                    <br>
+                    <button type ="submit" class="btn btn-warning" >confirmar </button>
+                    </a> 
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock loginform %}

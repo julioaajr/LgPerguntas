@@ -23,9 +23,12 @@
         {% if user.is_superuser %}
       <li class="nav-item dropdown">
         <a class="nav-link" href="/perguntas/cadastrar">Adicionar Perguntas</a>
+      </li>
         {%endif%}
-
       {% if user.is_superuser or user.is_staff %}
+      <li>
+        <a class="nav-link" href="/funcionarios/">Funcionarios</a>
+      </li>
       <li>
         <a class="nav-link" href="/registro/">Cadastro de usuário</a>
       </li>

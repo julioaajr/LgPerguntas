@@ -22,9 +22,11 @@ urlpatterns = [
     path('',views.home),
     path('registro/',views.registro),
     path('jogo/',views.jogo),
+    path('funcionarios/', views.funcionarios),
     path('validar_resposta/',views.valida_reposta),
     path('perguntas/cadastrar', views.Cadastra_Pergunta),
     path('login/',views.login_user),
     path('login/submit', views.submit_login),
     path('logout/', views.logout_user),
+    path('altsenha/',views.altsenha),
 ]

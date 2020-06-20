@@ -53,6 +53,25 @@ def logout_user(request):
     return redirect('/login/')
 
 
+def altsenha(request):
+    if request.method == 'POST':
+        passw = request.POST.get("password")
+        rpassw = request.POST.get("rpassword")
+        if passw == rpassw:
+            try:
+                usuario = AuthUser.objects.get(id = request.user.id)
+                usuario.set_password(passw)
+                usuario.save()
+                return redirect("/")
+            except:
+                None
+    return render(request, 'altsenha.html' )
+
+
+
+
+
+@login_required(login_url='/login/')
 @csrf_protect
 def registro (request):
     if request.method =='POST':
@@ -67,7 +86,7 @@ def registro (request):
         print('-username-'+username+'--nome-'+first_name+'--setor-'+last_name+'--pass--')
         
         try:
-            user = User.objects.create_user(username=username, last_name=last_name, password='123456789', is_superuser=0, is_staff=is_staff)
+            user = User.objects.create_user(first_name= first_name,username=username, last_name=last_name, password='123456789', is_superuser=0, is_staff=is_staff)
             user.save()
             y = AuthUser.objects.get(id=user.id)
             if(request.user.is_superuser and request.user.is_staff):
@@ -85,12 +104,16 @@ def registro (request):
             return render(request,'registro.html')
     return render(request,'registro.html')
 
-
+@login_required(login_url='/login/')
 def jogo(request):
     data = {}
     data['perguntas']=[]
     try:
-        data['pergunta'] = PerguntaSimples.objects.all().order_by('?')
+
+        usuario = AuthUser.objects.get(id = request.user.id)
+        f = Funcionario.objects.get(usuario = usuario)
+        empresa = f.empresa
+        data['pergunta'] = PerguntaSimples.objects.filter(empresa = empresa).order_by('?')
         x=0
         while x < 5:
             data['perguntas'].append(data['pergunta'][x])
@@ -124,8 +147,10 @@ def valida_reposta(request):
                     None
         print(pontuacao)
         try:
-            usuario = request.user
-            jogo = Jogo(jogador=usuario.id, pontuacao = pontuacao, nome_jogador = usuario.first_name)
+            usuario = AuthUser.objects.get(id=request.user.id)
+            f = Funcionario.objects.get(usuario = usuario)
+            empresa = f.empresa
+            jogo = Jogo(usuario=usuario,empresa = empresa, pontuacao = pontuacao,jogador=1)
             jogo.save()
             print (jogo.data_jogo)
         except:
@@ -141,30 +166,59 @@ def Cadastra_Pergunta(request):
             boolresposta = True
         else:
             boolresposta = False
-        pergunta = PerguntaSimples(descricao=request.POST.get('descricao'),resposta=boolresposta)
+        user = AuthUser.objects.get(id = request.user.id)
+        pergunta = PerguntaSimples(descricao=request.POST.get('descricao'),resposta=boolresposta, empresa = user)
         pergunta.save()
         return redirect('/jogo/')
 
-
+@login_required(login_url='/login/')
+def funcionarios(request):
+    data = {}
+    try:
+        usuario = AuthUser.objects.get(id=request.user.id)
+    except:
+        None
+    if request.user.is_superuser and request.user.is_staff:
+        try:
+            data['funcionarios'] = Funcionario.objects.filter(empresa=usuario)
+        except:
+            None    
+    elif(request.user.is_staff):
+        try:
+            f = Funcionario.objects.get(usuario = usuario)
+            empresa = f.empresa
+            data['funcionarios'] = Funcionario.objects.filter(empresa=empresa)
+        except:
+            None
+    return render(request, 'funcionarios.html',data)
 
 @login_required(login_url='/login/')
 def home(request):
     data = {}
-
-    if request.user.is_superuser or request.user.is_staff:
+    try:
+        usuario = AuthUser.objects.get(id=request.user.id)
+    except:
+        None
+    if request.user.is_superuser and request.user.is_staff:
         try:
-            data['acertos']= PerguntaSimples.objects.all().order_by('-acertos')[:5]
-            print(data['acertos'])
-            data['erros']=PerguntaSimples.objects.all().order_by('-erros')
-            data['melhores']=Jogo.objects.all().order_by('-pontuacao')[:5]
-
-            if request.user.is_staff:
-                data['score']=Jogo.objects.filter(jogador=request.user.id).order_by('-pontuacao')
+            data['acertos']= PerguntaSimples.objects.filter(empresa = usuario).order_by('-acertos')[:5]
+            data['erros']=PerguntaSimples.objects.filter(empresa = usuario).order_by('-erros')
+            data['melhores']=Jogo.objects.filter(empresa = usuario).order_by('-pontuacao')[:5]
+        except:
+            None    
+    elif(request.user.is_staff):
+        try:
+            f = Funcionario.objects.get(usuario = usuario)
+            empresa = f.empresa
+            data['acertos']= PerguntaSimples.objects.filter(empresa = empresa).order_by('-acertos')[:5]
+            data['erros']=PerguntaSimples.objects.filter(empresa = empresa).order_by('-erros')
+            data['melhores']=Jogo.objects.filter(empresa = empresa).order_by('-pontuacao')[:5]
+            
         except:
             None
-    else:
-        try:
-            data['score']=Jogo.objects.filter(jogador=request.user.id).order_by('-pontuacao')
-        except:
+    try:
+        data['score']=Jogo.objects.filter(usuario=usuario).order_by('-pontuacao')
+    except:
             None
     return render(request, 'home.html',data)
+

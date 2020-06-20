@@ -127,6 +127,7 @@ class Funcionario(models.Model):
     empresa = models.ForeignKey(AuthUser, models.DO_NOTHING,related_name="ex2")
 
 class PerguntaSimples (models.Model):
+    empresa = models.ForeignKey(AuthUser, models.DO_NOTHING)
     descricao = models.CharField(max_length=254)
     resposta =  models.BooleanField()
     acertos = models.IntegerField(default = 0)
@@ -135,6 +136,8 @@ class PerguntaSimples (models.Model):
 class Jogo(models.Model):
     jogador = models.IntegerField()
     nome_jogador = models.CharField(max_length=254, default="test")
+    usuario = models.ForeignKey(AuthUser, models.DO_NOTHING,related_name="ex4")
+    empresa = models.ForeignKey(AuthUser, models.DO_NOTHING,related_name="ex5")
     pontuacao = models.IntegerField()
     data_jogo = models.DateTimeField(auto_now=True)
 
