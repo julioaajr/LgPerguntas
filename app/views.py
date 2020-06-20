@@ -166,7 +166,7 @@ def valida_reposta(request):
             print (jogo.data_jogo)
         except:
             None
-        return redirect('/jogo/')
+        return redirect('/')
 
 
 def Cadastra_Pergunta(request):
